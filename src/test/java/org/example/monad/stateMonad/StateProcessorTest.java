@@ -43,7 +43,7 @@ class StateProcessorTest {
         String v_0 = "-o----";
         StateProcessor<State, String> start = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> f = (v) -> new StateProcessor<>(runInCyclesChart(v));
+        Function<String, StateProcessor<State, String>> f = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
         StateProcessor<State, String> step_1 = start.bind(f);
 
         Pair<String, State> step_2 = step_1.runState(GO_RIGHT);
@@ -57,7 +57,7 @@ class StateProcessorTest {
         String v_0 = "-o----";
         StateProcessor<State, String> start = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> nextStep = (v) -> new StateProcessor<>(runInCyclesChart(v));
+        Function<String, StateProcessor<State, String>> nextStep = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
         StateProcessor<State, String> process_step_3 = start
                 .bind(nextStep)
                 .bind(nextStep);
@@ -73,45 +73,20 @@ class StateProcessorTest {
         String v_0 = "-o----";
         StateProcessor<State, String> initialState = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> leftToRightAndBack = (v) -> new StateProcessor<>(runInCyclesChart(v));
+        Function<String, StateProcessor<State, String>> computeRunInCyclesStep = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
+
         StateProcessor<State, String> processSixSteps = initialState
-                .bind(leftToRightAndBack)
-                .bind(leftToRightAndBack)
-                .bind(leftToRightAndBack)
-                .bind(leftToRightAndBack)
-                .bind(leftToRightAndBack)
-                .bind(leftToRightAndBack);
+                .bind(computeRunInCyclesStep)
+                .bind(computeRunInCyclesStep)
+                .bind(computeRunInCyclesStep)
+                .bind(computeRunInCyclesStep)
+                .bind(computeRunInCyclesStep)
+                .bind(computeRunInCyclesStep);
 
         Pair<String, State> step_6 = processSixSteps.runState(GO_RIGHT);
 
         assertThat(step_6.getSecond(), Matchers.is(GO_LEFT));
         assertThat(step_6.getFirst(), Matchers.is("----o-"));
-    }
-
-    private static Function<State, Pair<String, State>> runInCyclesChart(String v) {
-        return state -> {
-            switch (state) {
-                case GO_LEFT -> {
-                    int pos = v.indexOf("o");
-                    if (pos > 0) {
-                        String moved_left = v.substring(0, pos - 1) + "o-" + v.substring(pos + 1);
-                        return new Pair<>(moved_left, GO_LEFT);
-                    } else {
-                        return new Pair<>(v, GO_RIGHT);
-                    }
-                }
-                case GO_RIGHT -> {
-                    int pos = v.indexOf("o");
-                    if (pos < v.length() - 1) {
-                        String moved_right = v.substring(0, pos) + "-o" + v.substring(pos + 2);
-                        return new Pair<>(moved_right, GO_RIGHT);
-                    } else {
-                        return new Pair<>(v, GO_LEFT);
-                    }
-                }
-            }
-            return null;
-        };
     }
 
     private static void assertThatBothStateProcessorsAreEqual(StateProcessor<State, String> m_a, StateProcessor<State, String> result) {

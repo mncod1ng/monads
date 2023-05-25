@@ -3,11 +3,16 @@ package org.example.monad.tryMonad;
 
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public abstract class Try<T> {
 
-    public static <U> Try<U> ofThrowable(Supplier<U> f) {
+    public interface ThrowableSupplier<S> {
+        //Lesson: If you comment me out, you get compile errors. :-)
+        S get() throws Throwable;
+
+    }
+
+    public static <U> Try<U> ofThrowable(ThrowableSupplier<U> f) {
         Objects.requireNonNull(f);
         try {
             return Try.successful(f.get());
