@@ -68,7 +68,7 @@ class IdentityTest {
     void how_to_use_identity() {
 
         String result = Identity.unit(0)
-                .map(date -> LocalDate.ofEpochDay(0))
+                .map(LocalDate::ofEpochDay)
                 .map(date -> date.format(DateTimeFormatter.ISO_DATE))
                 .get();
 

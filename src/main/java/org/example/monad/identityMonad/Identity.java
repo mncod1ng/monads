@@ -10,8 +10,8 @@ public class Identity<T> {
         this.value = value;
     }
 
-    public static <S> Identity<S> unit(S s){
-        return new Identity<>(s);
+    public static <S> Identity<S> unit(S value){
+        return new Identity<>(value);
     }
 
     public <S> Identity<S> bind(Function<T, Identity<S>> f){
