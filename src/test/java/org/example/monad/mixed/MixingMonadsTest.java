@@ -16,8 +16,8 @@ public class MixingMonadsTest {
     void syntactical_challenges_with_mixing_monads() {
         Optional<Integer> result = Optional.ofNullable(
                 Try.to(() -> personAgeApi.findAgeForPersonByName("Angela Merkel"))
-                        .flatMap(foundAge -> Try.to(foundAge::get))
-                        .flatMap(age -> Try.to(() -> Integer.valueOf(age)))
+                        .flatMap(anyAge -> Try.to(anyAge::get))
+                        .flatMap(anyAge -> Try.to(() -> Integer.valueOf(anyAge)))
                         .orElse(null)
         );
 
