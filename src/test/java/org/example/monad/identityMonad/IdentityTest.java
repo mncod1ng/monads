@@ -67,9 +67,11 @@ class IdentityTest {
     @Test
     void how_to_use_identity() {
 
-        String result = Identity.unit(0)
+        long date = 0;
+
+        String result = Identity.unit(date)
                 .map(LocalDate::ofEpochDay)
-                .map(date -> date.format(DateTimeFormatter.ISO_DATE))
+                .map(anyDate -> anyDate.format(DateTimeFormatter.ISO_DATE))
                 .get();
 
         String correct = TEST_DATE.format(DateTimeFormatter.ISO_DATE);
