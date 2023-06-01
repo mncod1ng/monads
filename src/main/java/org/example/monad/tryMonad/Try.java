@@ -12,7 +12,7 @@ public abstract class Try<T> {
 
     }
 
-    public static <U> Try<U> ofThrowable(ThrowableSupplier<U> f) {
+    public static <U> Try<U> to(ThrowableSupplier<U> f) {
         Objects.requireNonNull(f);
         try {
             return Try.successful(f.get());

@@ -14,8 +14,8 @@ public class TryTest {
     @Test
     void should_be_one_when_divisble_by_two() {
 
-        Integer result = Try.ofThrowable(() -> Integer.valueOf("2"))
-                .flatMap(n -> Try.ofThrowable(() -> n / 2))
+        Integer result = Try.to(() -> Integer.valueOf("2"))
+                .flatMap(n -> Try.to(() -> n / 2))
                 .orElse(0);
 
         assertThat(result, is(1));
@@ -24,8 +24,8 @@ public class TryTest {
     @Test
     void should_be_fallback_value_when_not_divisible_by_two() {
 
-        Integer result = Try.ofThrowable(() -> Integer.valueOf("1"))
-                .flatMap(n -> Try.ofThrowable(() -> n / 2))
+        Integer result = Try.to(() -> Integer.valueOf("1"))
+                .flatMap(n -> Try.to(() -> n / 2))
                 .orElse(0);
 
         assertThat(result, is(0));
@@ -34,8 +34,8 @@ public class TryTest {
     @Test
     void should_be_fallback_value_when_string_not_parsable_to_integer() {
 
-        Integer result = Try.ofThrowable(() -> Integer.valueOf("blub"))
-                .flatMap(n -> Try.ofThrowable(() -> n / 2))
+        Integer result = Try.to(() -> Integer.valueOf("blub"))
+                .flatMap(n -> Try.to(() -> n / 2))
                 .orElse(0);
 
         assertThat(result, is(0));
@@ -43,7 +43,7 @@ public class TryTest {
 
     @Test
     void should_be_fallback_when_throws() {
-        String result = Try.ofThrowable(TryTest::throwsIOException)
+        String result = Try.to(TryTest::throwsIOException)
                 .orElse(IO_EXCEPTION_FALLBACK_STRING);
 
         assertThat(result, is(IO_EXCEPTION_FALLBACK_STRING));
