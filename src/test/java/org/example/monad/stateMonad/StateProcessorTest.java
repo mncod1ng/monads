@@ -40,8 +40,7 @@ class StateProcessorTest {
 
     @Test
     void compute_example_one_step() {
-        String v_0 = "-o----";
-        StateProcessor<State, String> start = StateProcessor.unit(v_0);
+        StateProcessor<State, String> start = StateProcessor.unit("-o----");
 
         Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
@@ -55,8 +54,7 @@ class StateProcessorTest {
 
     @Test
     void compute_example_two_steps() {
-        String v_0 = "-o----";
-        StateProcessor<State, String> start = StateProcessor.unit(v_0);
+        StateProcessor<State, String> start = StateProcessor.unit("-o----");
 
         Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
@@ -72,8 +70,7 @@ class StateProcessorTest {
 
     @Test
     void compute_example_six_steps() {
-        String v_0 = "-o----";
-        StateProcessor<State, String> start = StateProcessor.unit(v_0);
+        StateProcessor<State, String> start = StateProcessor.unit("-o----");
 
         Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
@@ -91,14 +88,17 @@ class StateProcessorTest {
         assertThat(state_after_six_steps.getFirst(), Matchers.is("----o-"));
     }
 
-    private static void assertThatBothStateProcessorsAreEqual(StateProcessor<State, String> m_a, StateProcessor<State, String> result) {
-        Arrays.stream(State.values()).forEach(state -> {
-            assertThatBothStateProcessorsProcessStateWithSameResult(m_a, result, state);
+    private static void assertThatBothStateProcessorsAreEqual(StateProcessor<State, String> processor_1, StateProcessor<State, String> processor_2) {
+        State[] allPossibleStates = values();
+        Arrays.stream(allPossibleStates).forEach(state -> {
+            assertThatBothStateProcessorsProcessStateWithSameResult(processor_1, processor_2, state);
         });
     }
 
-    private static void assertThatBothStateProcessorsProcessStateWithSameResult(StateProcessor<State, String> m_a, StateProcessor<State, String> result, State state) {
-        assertThat(result.runState(state).getFirst(), Matchers.is(m_a.runState(state).getFirst()));
-        assertThat(result.runState(state).getSecond(), Matchers.is(m_a.runState(state).getSecond()));
+    private static void assertThatBothStateProcessorsProcessStateWithSameResult(StateProcessor<State, String> processor_1, StateProcessor<State, String> processor_2, State state) {
+        Pair<String, State> result_1 = processor_1.runState(state);
+        Pair<String, State> result_2 = processor_2.runState(state);
+        assertThat(result_1.getFirst(), Matchers.is(result_2.getFirst()));
+        assertThat(result_1.getSecond(), Matchers.is(result_2.getSecond()));
     }
 }
