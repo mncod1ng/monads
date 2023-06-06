@@ -32,7 +32,7 @@ class StateProcessorTest {
 
         Function<String, StateProcessor<State, String>> unit = StateProcessor::unit;
 
-        StateProcessor<State, String> p_B = p_A.bind(unit);
+        StateProcessor<State, String> p_B = p_A.process(unit);
 
         assertThatBothStateProcessorsAreEqual(p_A, p_B);
     }
@@ -43,13 +43,14 @@ class StateProcessorTest {
         String v_0 = "-o----";
         StateProcessor<State, String> start = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> f = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
-        StateProcessor<State, String> step_1 = start.bind(f);
+        Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
-        Pair<String, State> step_2 = step_1.runState(GO_RIGHT);
+        StateProcessor<State, String> process_one_step = start.process(step);
 
-        assertThat(step_2.getSecond(), Matchers.is(GO_RIGHT));
-        assertThat(step_2.getFirst(), Matchers.is("--o---"));
+        Pair<String, State> state_after_one_step = process_one_step.runState(GO_RIGHT);
+
+        assertThat(state_after_one_step.getSecond(), Matchers.is(GO_RIGHT));
+        assertThat(state_after_one_step.getFirst(), Matchers.is("--o---"));
     }
 
     @Test
@@ -57,36 +58,37 @@ class StateProcessorTest {
         String v_0 = "-o----";
         StateProcessor<State, String> start = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> nextStep = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
-        StateProcessor<State, String> process_step_3 = start
-                .bind(nextStep)
-                .bind(nextStep);
+        Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
-        Pair<String, State> step_3 = process_step_3.runState(GO_RIGHT);
+        StateProcessor<State, String> process_two_steps = start
+                .process(step)
+                .process(step);
 
-        assertThat(step_3.getSecond(), Matchers.is(GO_RIGHT));
-        assertThat(step_3.getFirst(), Matchers.is("---o--"));
+        Pair<String, State> state_after_two_steps = process_two_steps.runState(GO_RIGHT);
+
+        assertThat(state_after_two_steps.getSecond(), Matchers.is(GO_RIGHT));
+        assertThat(state_after_two_steps.getFirst(), Matchers.is("---o--"));
     }
 
     @Test
     void compute_example_six_steps() {
         String v_0 = "-o----";
-        StateProcessor<State, String> initialState = StateProcessor.unit(v_0);
+        StateProcessor<State, String> start = StateProcessor.unit(v_0);
 
-        Function<String, StateProcessor<State, String>> computeRunInCyclesStep = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
+        Function<String, StateProcessor<State, String>> step = (v) -> new StateProcessor<>(RunInCyclesChart.get(v));
 
-        StateProcessor<State, String> processSixSteps = initialState
-                .bind(computeRunInCyclesStep)
-                .bind(computeRunInCyclesStep)
-                .bind(computeRunInCyclesStep)
-                .bind(computeRunInCyclesStep)
-                .bind(computeRunInCyclesStep)
-                .bind(computeRunInCyclesStep);
+        StateProcessor<State, String> process_six_steps = start
+                .process(step)
+                .process(step)
+                .process(step)
+                .process(step)
+                .process(step)
+                .process(step);
 
-        Pair<String, State> step_6 = processSixSteps.runState(GO_RIGHT);
+        Pair<String, State> state_after_six_steps = process_six_steps.runState(GO_RIGHT);
 
-        assertThat(step_6.getSecond(), Matchers.is(GO_LEFT));
-        assertThat(step_6.getFirst(), Matchers.is("----o-"));
+        assertThat(state_after_six_steps.getSecond(), Matchers.is(GO_LEFT));
+        assertThat(state_after_six_steps.getFirst(), Matchers.is("----o-"));
     }
 
     private static void assertThatBothStateProcessorsAreEqual(StateProcessor<State, String> m_a, StateProcessor<State, String> result) {

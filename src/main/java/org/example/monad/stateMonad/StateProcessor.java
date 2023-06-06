@@ -18,7 +18,7 @@ public class StateProcessor<S, A> {
         return new StateProcessor<>((S s) -> new Pair<>(x, s));
     }
 
-    public <B> StateProcessor<S, B> bind(Function<A, StateProcessor<S, B>> f) {
+    public <B> StateProcessor<S, B> process(Function<A, StateProcessor<S, B>> f) {
         return new StateProcessor<>((S s1) -> {
 
             Pair<A, S> pair_v1_s2 = runState(s1);
