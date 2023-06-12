@@ -70,10 +70,13 @@ public class TryTest {
 
     @Test
     void try_functor() {
-        Try.to((String string) -> Integer.valueOf(string))
-                .andThen(Try.to(integer -> integer / 2))
-                .apply(Try.to(() -> "fail"))
+        Integer result = Try.to((String string) -> Integer.valueOf(string))
+                .thenTryTo(integer -> integer / 2)
+                .justDoIt("fails")
                 .orElse(FALLBACK_INTEGER);
+
+        assertThat(result, is(FALLBACK_INTEGER));
+
     }
 
     private static String throwsIOException() throws IOException {

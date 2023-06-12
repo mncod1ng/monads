@@ -16,6 +16,21 @@ public abstract class Try<T> {
     public interface ThrowableFunction<A, B> {
         B apply(A a) throws Throwable;
     }
+    public interface TryToFunction<A, B> extends Function<Try<A>, Try<B>> {
+
+        default Try<B> justDoIt(A a){
+            return this.apply(Try.successful(a));
+        }
+
+        default <C> TryToFunction<A, C> thenTryTo(ThrowableFunction<B, C> after){
+            TryToFunction<B, C> tryToFunction = Try.to(after);
+            return (Try<A> tryA) -> {
+                Try<B> tryB = this.apply(tryA);
+                return tryToFunction.apply(tryB);
+            };
+        }
+    }
+
 
     public static <U> Try<U> to(ThrowableSupplier<U> f) {
         Objects.requireNonNull(f);
@@ -26,7 +41,7 @@ public abstract class Try<T> {
         }
     }
 
-    public static <A, B> Function<Try<A>, Try<B>> to(ThrowableFunction<A, B> f) {
+    public static <A, B> TryToFunction<A, B> to(ThrowableFunction<A, B> f) {
         Objects.requireNonNull(f);
         return (Try<A> tryA) -> {
             try {
