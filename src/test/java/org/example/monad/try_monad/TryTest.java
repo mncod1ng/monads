@@ -1,4 +1,4 @@
-package org.example.monad.tryMonad;
+package org.example.monad.try_monad;
 
 import org.junit.jupiter.api.Test;
 

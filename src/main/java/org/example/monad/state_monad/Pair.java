@@ -1,4 +1,4 @@
-package org.example.monad.stateMonad;
+package org.example.monad.state_monad;
 
 public class Pair<S, T> {
 

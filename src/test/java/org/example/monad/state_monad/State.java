@@ -1,7 +1,6 @@
-package org.example.monad.stateMonad;
+package org.example.monad.state_monad;
 
 public enum State {
-    BACK,
     GO_LEFT,
     GO_RIGHT
 }

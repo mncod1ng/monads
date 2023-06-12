@@ -1,9 +1,9 @@
-package org.example.monad.identityMonad;
+package org.example.monad.identity_monad;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-public class Identity<T> {
+public final class Identity<T> {
     private final T value;
 
     private Identity(T value) {

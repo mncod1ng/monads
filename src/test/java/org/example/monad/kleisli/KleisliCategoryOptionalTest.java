@@ -1,6 +1,6 @@
-package org.example.monad.optional;
+package org.example.monad.kleisli;
 
-import org.example.kleisli.KleisliCategoryOptArrow;
+import org.example.kleisli_category.KleisliCategoryOptional;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -9,15 +9,15 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-class OptionalTest {
+class KleisliCategoryOptionalTest {
 
     @Test
     void optional_of_is_a_left_identity() {
-        KleisliCategoryOptArrow<String, Integer> f = (String string) -> Optional.of(string.length());
+        KleisliCategoryOptional<String, Integer> f = (String string) -> Optional.of(string.length());
 
         Optional<Integer> f_a = f.apply("a");
 
-        KleisliCategoryOptArrow<Integer, Integer> unit = KleisliCategoryOptArrow.unit();
+        KleisliCategoryOptional<Integer, Integer> unit = KleisliCategoryOptional.unit();
 
         Optional<Integer> result = f.kleisliOperator(unit).apply("a");
 
@@ -28,9 +28,9 @@ class OptionalTest {
     void optional_of_is_a_right_identity() {
         String a = "a";
 
-        KleisliCategoryOptArrow<String, String> unit = Optional::of;
+        KleisliCategoryOptional<String, String> unit = Optional::of;
 
-        KleisliCategoryOptArrow<String, Integer> f = (String string) -> Optional.of(string.length());
+        KleisliCategoryOptional<String, Integer> f = (String string) -> Optional.of(string.length());
 
 
         Optional<Integer> f_a = f.apply(a);
@@ -46,9 +46,9 @@ class OptionalTest {
     @Test
     void optional_of_is_a_right_identity_empty_fails() {
 
-        KleisliCategoryOptArrow<String, String> unit = KleisliCategoryOptArrow.unit();
+        KleisliCategoryOptional<String, String> unit = KleisliCategoryOptional.unit();
 
-        KleisliCategoryOptArrow<String, Integer> f = (String string) -> Optional.of(string.length());
+        KleisliCategoryOptional<String, Integer> f = (String string) -> Optional.of(string.length());
 
 
         Optional<Integer> f_a = f.apply(null);
@@ -61,12 +61,12 @@ class OptionalTest {
 
     @Test
     void kleisli_operator_is_associative() {
-        KleisliCategoryOptArrow<String, Integer> f = KleisliCategoryOptArrow.arrow(String::length);
-        KleisliCategoryOptArrow<Integer, Boolean> g = KleisliCategoryOptArrow.arrow((Integer integer) -> integer % 2 == 0);
-        KleisliCategoryOptArrow<Boolean, String> h = KleisliCategoryOptArrow.arrow((Boolean bool) -> Boolean.toString(bool));
+        KleisliCategoryOptional<String, Integer> f = KleisliCategoryOptional.arrow(String::length);
+        KleisliCategoryOptional<Integer, Boolean> g = KleisliCategoryOptional.arrow((Integer integer) -> integer % 2 == 0);
+        KleisliCategoryOptional<Boolean, String> h = KleisliCategoryOptional.arrow((Boolean bool) -> Boolean.toString(bool));
 
-        KleisliCategoryOptArrow<String, Boolean> f_fishy_g = f.kleisliOperator(g);
-        KleisliCategoryOptArrow<Integer, String> g_fishy_h = g.kleisliOperator(h);
+        KleisliCategoryOptional<String, Boolean> f_fishy_g = f.kleisliOperator(g);
+        KleisliCategoryOptional<Integer, String> g_fishy_h = g.kleisliOperator(h);
 
         Optional<String> result_1 = f_fishy_g.kleisliOperator(h).apply("a");
 
@@ -80,9 +80,9 @@ class OptionalTest {
     @Test
     void optional_of_is_a_left_identity_empty_fails() {
 
-        KleisliCategoryOptArrow<String, String> unit = KleisliCategoryOptArrow.unit();
+        KleisliCategoryOptional<String, String> unit = KleisliCategoryOptional.unit();
 
-        KleisliCategoryOptArrow<String, Integer> f = KleisliCategoryOptArrow.arrow(String::length);
+        KleisliCategoryOptional<String, Integer> f = KleisliCategoryOptional.arrow(String::length);
 
         Optional<Integer> f_a = f.apply(null);
 
@@ -94,9 +94,9 @@ class OptionalTest {
     @Test
     void optional_of_is_a_left_identity_empty_fixed() {
 
-        KleisliCategoryOptArrow<String, String> unit = KleisliCategoryOptArrow.unit_empty_fixed();
+        KleisliCategoryOptional<String, String> unit = KleisliCategoryOptional.unit_empty_fixed();
 
-        KleisliCategoryOptArrow<String, Integer> f = KleisliCategoryOptArrow.arrow(String::length);
+        KleisliCategoryOptional<String, Integer> f = KleisliCategoryOptional.arrow(String::length);
 
         Optional<Integer> f_a = f.apply(null);
 
@@ -108,9 +108,9 @@ class OptionalTest {
     @Test
     void optional_of_is_a_right_identity_empty_fixed() {
 
-        KleisliCategoryOptArrow<Integer, Integer> unit = KleisliCategoryOptArrow.unit();
+        KleisliCategoryOptional<Integer, Integer> unit = KleisliCategoryOptional.unit();
 
-        KleisliCategoryOptArrow<String, Integer> f = KleisliCategoryOptArrow.arrow(String::length);
+        KleisliCategoryOptional<String, Integer> f = KleisliCategoryOptional.arrow(String::length);
 
 
         Optional<Integer> f_a = f.apply(null);

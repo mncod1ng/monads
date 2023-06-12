@@ -1,4 +1,4 @@
-package org.example.monad.tryMonad;
+package org.example.monad.try_monad;
 
 
 import java.util.Objects;
