@@ -18,7 +18,7 @@ public abstract class Try<T> {
     }
     public interface TryToFunction<A, B> extends Function<Try<A>, Try<B>> {
 
-        default Try<B> justDoIt(A a){
+        default Try<B> applyTryTo(A a){
             return this.apply(Try.successful(a));
         }
 

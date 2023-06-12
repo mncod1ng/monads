@@ -72,7 +72,7 @@ public class TryTest {
     void try_functor() {
         Integer result = Try.to((String string) -> Integer.valueOf(string))
                 .thenTryTo(integer -> integer / 2)
-                .justDoIt("fails")
+                .applyTryTo("fails")
                 .orElse(FALLBACK_INTEGER);
 
         assertThat(result, is(FALLBACK_INTEGER));
