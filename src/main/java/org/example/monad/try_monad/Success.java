@@ -11,14 +11,44 @@ public class Success<T> extends Try<T> {
     }
 
     @Override
+    public Try<T> unless(ThrowableSupplier<T> f) {
+        Try<T> other = Try.to(f);
+        if (other.failed()){
+            return this;
+        }
+        return other;
+    }
+
+    @Override
+    public Try<T> orElseTry(ThrowableSupplier<T> f) {
+        return this;
+    }
+
+    @Override
     public <U> Try<U> flatMap(Function<? super T, Try<U>> f) {
         Objects.requireNonNull(f);
         return f.apply(value);
     }
 
     @Override
-    public T get() {
+    public <U> Try<U> map(Function<? super T, U> f) {
+        Objects.requireNonNull(f);
+        return new Success<>(f.apply(value));
+    }
+
+    @Override
+    public Try<T> failMap(Function<Throwable, Throwable> errorFunction) {
+        return this;
+    }
+
+    @Override
+    public T justDoIt() {
         return value;
+    }
+
+    @Override
+    public boolean failed() {
+        return false;
     }
 
     @Override
