@@ -41,7 +41,7 @@ public class Failure<T>  extends Try<T> {
     }
 
     @Override
-    public T justDoIt() throws Throwable {
+    public T getResult() throws Throwable {
         throw e;
     }
 
@@ -53,5 +53,10 @@ public class Failure<T>  extends Try<T> {
     @Override
     public T orElse(T value) {
         return value;
+    }
+
+    @Override
+    public T onFail(Function<Throwable, T> catchFail) {
+        return catchFail.apply(e);
     }
 }

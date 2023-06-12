@@ -45,7 +45,7 @@ public abstract class Try<T> {
         Objects.requireNonNull(f);
         return (Try<A> tryA) -> {
             try {
-                A a = tryA.justDoIt();
+                A a = tryA.getResult();
                 return Try.successful(f.apply(a));
             } catch (Throwable e) {
                 return Try.failure(e);
@@ -71,9 +71,11 @@ public abstract class Try<T> {
 
     public abstract Try<T> failMap(Function<Throwable, Throwable> errorFunction);
 
-    public abstract T justDoIt() throws Throwable;
+    public abstract T getResult() throws Throwable;
 
     public abstract boolean failed();
 
     public abstract T orElse(T value);
+
+    public abstract T onFail(Function<Throwable, T> catchFail);
 }

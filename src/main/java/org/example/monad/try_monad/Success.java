@@ -42,7 +42,7 @@ public class Success<T> extends Try<T> {
     }
 
     @Override
-    public T justDoIt() {
+    public T getResult() {
         return value;
     }
 
@@ -54,5 +54,10 @@ public class Success<T> extends Try<T> {
     @Override
     public T orElse(T value) {
         return this.value;
+    }
+
+    @Override
+    public T onFail(Function<Throwable, T> catchFail) {
+        return value;
     }
 }
