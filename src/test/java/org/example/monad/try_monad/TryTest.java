@@ -76,7 +76,6 @@ public class TryTest {
                 .orElse(FALLBACK_INTEGER);
 
         assertThat(result, is(FALLBACK_INTEGER));
-
     }
 
     private static String throwsIOException() throws IOException {
