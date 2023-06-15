@@ -18,7 +18,7 @@ public abstract class Try<T> {
     }
     public interface TryToFunction<A, B> extends Function<Try<A>, Try<B>> {
 
-        default Try<B> applyTryTo(A a){
+        default Try<B> tryApply(A a){
             return this.apply(Try.successful(a));
         }
 
@@ -77,5 +77,5 @@ public abstract class Try<T> {
 
     public abstract T orElse(T value);
 
-    public abstract T onFail(Function<Throwable, T> catchFail);
+    public abstract T doCatch(Function<Throwable, T> catchFail);
 }

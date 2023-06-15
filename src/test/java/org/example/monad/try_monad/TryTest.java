@@ -72,8 +72,8 @@ public class TryTest {
     void try_functor() {
         Integer result = Try.to((String string) -> Integer.valueOf(string))
                 .thenTryTo(integer -> integer / 2)
-                .applyTryTo("fails")
-                .onFail(throwable -> FALLBACK_INTEGER);
+                .tryApply("fails")
+                .doCatch(fail -> FALLBACK_INTEGER);
 
         assertThat(result, is(FALLBACK_INTEGER));
     }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class ListFunctor<A, B> implements Function<Function<A, B>, Function<List<A>, List<B>>> {
 
-    //fmap for functions
+
     @Override
     public Function<List<A>, List<B>> apply(Function<A, B> function) {
         return (List<A> listA) -> listA.stream().map(function).collect(Collectors.toList());
@@ -26,6 +26,7 @@ public class ListFunctor<A, B> implements Function<Function<A, B>, Function<List
         return List.of(t);
     }
 
+    //fmap for functions
     public static <T,R> Function<List<T>, List<R>> fmap(Function<T, R> function){
         ListFunctor<T, R> listFunctor = new ListFunctor<>();
         return listFunctor.apply(function);

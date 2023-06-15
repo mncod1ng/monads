@@ -56,7 +56,7 @@ public class Failure<T>  extends Try<T> {
     }
 
     @Override
-    public T onFail(Function<Throwable, T> catchFail) {
+    public T doCatch(Function<Throwable, T> catchFail) {
         return catchFail.apply(e);
     }
 }

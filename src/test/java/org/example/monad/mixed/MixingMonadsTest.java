@@ -33,5 +33,24 @@ public class MixingMonadsTest {
         assertThat(result.isEmpty(), Matchers.is(true));
     }
 
+    @Test
+    void with_functor() {
+
+        Optional<LocalDate> result = Optional.ofNullable(
+                Try.to(internationalPlantNamesIndexApi::findDateByScientificName)
+                        .thenTryTo(Optional::get)
+                        .thenTryTo(anyAge -> LocalDate.parse(anyAge, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)))
+                        .tryApply("Monstera acreana")
+                        .orElse(null)
+        );
+
+                /* TODO: Want to have method that returns optional
+                     value present in case of success and value present;
+                     empty otherwise
+                  */
+
+        assertThat(result.isEmpty(), Matchers.is(true));
+    }
+
 
 }

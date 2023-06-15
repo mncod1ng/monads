@@ -10,10 +10,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class ListFunctorTest {
 
     @Test
-    void should_lift_function() {
+    void should_lift_functions() {
         List<Integer> integers = List.of(1, 2, 3, 4, 5, 6, 7, 8);
-        List<Integer> result = ListFunctor.fmap((Integer integer) -> integer * integer).apply(integers);
+        List<Integer> result =
+                ListFunctor.fmap((Integer integer) -> integer * integer)
+                        .andThen(ListFunctor.fmap((Integer integer) -> integer % 2))
+                        .apply(integers);
 
-        assertThat(result, Matchers.equalTo(List.of(1, 4, 9, 16, 25, 36, 49, 64)));
+        assertThat(result, Matchers.equalTo(List.of(1, 0, 1, 0, 1, 0, 1, 0)));
     }
 }

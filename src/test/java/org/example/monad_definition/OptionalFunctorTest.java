@@ -1,8 +1,11 @@
 package org.example.monad_definition;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class OptionalFunctorTest {
     @Test
@@ -13,6 +16,9 @@ class OptionalFunctorTest {
                 .apply(OptionalFunctor.fmap("test"));
 
 
+
+        assertThat(result.isPresent(), Matchers.is(true));
+        assertThat(result.get(), Matchers.is(0));
     }
 
     private Integer getLength(String string) {
