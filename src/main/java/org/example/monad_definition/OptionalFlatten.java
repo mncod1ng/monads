@@ -8,4 +8,8 @@ public class OptionalFlatten<T> implements Function<Optional<Optional<T>>, Optio
     public Optional<T> apply(Optional<Optional<T>> optOpt) {
         return optOpt.orElse(Optional.empty());
     }
+
+    public static <S> Optional<S> flat(Optional<Optional<S>> optOpt){
+        return new OptionalFlatten<S>().apply(optOpt);
+    }
 }

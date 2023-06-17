@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 /**
  * The optional monad is an (endo-)functor for the category of types and functions
+ * with certain additional assumptions
  * It maps the objects and the functions
  * The image of the functor with regard to types is given by Optional<T>
  * Computes partial / null returing functions.

@@ -14,7 +14,7 @@ public final class Identity<T> {
         return new Identity<>(value);
     }
 
-    public <S> Identity<S> bind(Function<T, Identity<S>> f){
+    public <S> Identity<S> flatMap(Function<T, Identity<S>> f){
         return f.apply(value);
     }
 

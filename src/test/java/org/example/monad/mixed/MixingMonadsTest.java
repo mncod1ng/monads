@@ -15,6 +15,17 @@ public class MixingMonadsTest {
 
     private final InternationalPlantNamesIndexApi internationalPlantNamesIndexApi = new InternationalPlantNamesIndexApi();
 
+
+    @Test
+    void flatMap_flats_nested_monads() {
+        Optional<Integer> optional1 = Optional.of(1);
+        Optional<Integer> optional2 = Optional.of(2);
+
+        Optional<Integer> result = optional1.flatMap(value1 -> optional2.map(value2 -> value1 + value2));
+
+        assertThat(result.get(), Matchers.is(3));
+    }
+
     @Test
     void syntactical_challenges_with_mixing_monads() {
 
@@ -22,13 +33,11 @@ public class MixingMonadsTest {
                 Try.to(() -> internationalPlantNamesIndexApi.findDateByScientificName("Monstera acreana"))
                         .flatMap(anyAge -> Try.to(anyAge::get))
                         .flatMap(anyAge -> Try.to(() -> LocalDate.parse(anyAge, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH))))
-                        .orElse(null)
+                        .doCatch(fail -> {
+                            //TODO error handling
+                            return null;
+                        })
         );
-
-                /* TODO: Want to have method that returns optional
-                     value present in case of success and value present;
-                     empty otherwise
-                  */
 
         assertThat(result.isEmpty(), Matchers.is(true));
     }
@@ -41,13 +50,12 @@ public class MixingMonadsTest {
                         .thenTryTo(Optional::get)
                         .thenTryTo(anyAge -> LocalDate.parse(anyAge, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)))
                         .tryApply("Monstera acreana")
-                        .orElse(null)
+                        .doCatch(fail -> {
+                            //TODO error handling
+                            return null;
+                        })
         );
 
-                /* TODO: Want to have method that returns optional
-                     value present in case of success and value present;
-                     empty otherwise
-                  */
 
         assertThat(result.isEmpty(), Matchers.is(true));
     }

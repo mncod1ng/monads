@@ -1,9 +1,12 @@
 package org.example.monad.try_monad;
 
+import org.example.monad.try_monad.definitions.ThrowableSupplier;
+
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
-public class Failure<T>  extends Try<T> {
+public final class Failure<T> extends Try<T> {
     private final Throwable e;
 
     Failure(Throwable e) {
@@ -13,7 +16,7 @@ public class Failure<T>  extends Try<T> {
     @Override
     public Try<T> unless(ThrowableSupplier<T> f) {
         Try<T> other = Try.to(f);
-        if (other.failed()){
+        if (other.failed()) {
             return this;
         }
         return other;
@@ -41,7 +44,7 @@ public class Failure<T>  extends Try<T> {
     }
 
     @Override
-    public T getResult() throws Throwable {
+    public T get() throws Throwable {
         throw e;
     }
 
@@ -59,4 +62,6 @@ public class Failure<T>  extends Try<T> {
     public T doCatch(Function<Throwable, T> catchFail) {
         return catchFail.apply(e);
     }
+
+
 }
