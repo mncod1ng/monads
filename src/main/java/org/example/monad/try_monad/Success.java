@@ -1,5 +1,6 @@
 package org.example.monad.try_monad;
 
+import org.example.monad.try_monad.definitions.ThrowableFunction;
 import org.example.monad.try_monad.definitions.ThrowableSupplier;
 
 import java.util.Objects;
@@ -62,6 +63,15 @@ public final class Success<T> extends Try<T> {
     @Override
     public T doCatch(Function<Throwable, T> catchFail) {
         return value;
+    }
+
+    @Override
+    public <U> Try<U> thenTry(ThrowableFunction<T, U> f) {
+        try {
+            return new Success<>(f.apply(value));
+        } catch (Throwable e) {
+            return Try.failure(e);
+        }
     }
 
 }

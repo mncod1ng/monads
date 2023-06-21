@@ -4,6 +4,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -26,5 +27,14 @@ class OptionalFunctorTest {
             return null;
         }
         return string.length();
+    }
+
+    @Test
+    void flatten() {
+        Optional<Optional<Integer>> nested = Optional.of(Optional.of(1));
+        Optional<Integer> flat = nested.flatMap(Function.identity());
+
+        assertThat(flat.isPresent(), Matchers.is(true));
+        assertThat(flat.get(),Matchers.is(1));
     }
 }

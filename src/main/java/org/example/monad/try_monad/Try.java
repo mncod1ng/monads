@@ -57,4 +57,5 @@ public abstract sealed class Try<T> permits Success, Failure {
 
     public abstract T doCatch(Function<Throwable, T> catchFail);
 
+    public abstract  <U> Try<U> thenTry(ThrowableFunction<T, U> f);
 }

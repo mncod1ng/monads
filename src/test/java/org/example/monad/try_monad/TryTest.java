@@ -69,10 +69,28 @@ public class TryTest {
     }
 
     @Test
-    void try_functor() {
+    void try_functor_usage() {
         Integer result = Try.to((String string) -> Integer.valueOf(string))
                 .thenTryTo(integer -> integer / 2)
                 .tryApply("fails")
+                .doCatch(fail -> FALLBACK_INTEGER);
+
+        assertThat(result, is(FALLBACK_INTEGER));
+    }
+
+    @Test
+    void try_another_usage() {
+        Integer result = Try.to(() -> Integer.valueOf("fails"))
+                .thenTry(integer -> integer / 2)
+                .doCatch(fail -> FALLBACK_INTEGER);
+
+        assertThat(result, is(FALLBACK_INTEGER));
+    }
+
+    @Test
+    void try_another_usage_again() {
+        Integer result = Try.successful(1)
+                .thenTry(integer -> integer / 2)
                 .doCatch(fail -> FALLBACK_INTEGER);
 
         assertThat(result, is(FALLBACK_INTEGER));

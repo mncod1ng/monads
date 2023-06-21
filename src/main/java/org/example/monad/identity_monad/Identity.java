@@ -10,7 +10,7 @@ public final class Identity<T> {
         this.value = value;
     }
 
-    public static <S> Identity<S> unit(S value){
+    public static <S> Identity<S> of(S value){
         return new Identity<>(value);
     }
 
@@ -19,7 +19,7 @@ public final class Identity<T> {
     }
 
     public <S> Identity<S> map(Function<T, S> f){
-        return Identity.unit(f.apply(value));
+        return Identity.of(f.apply(value));
     }
 
     public T get() {

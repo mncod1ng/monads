@@ -1,5 +1,7 @@
 package org.example.monad.try_monad;
 
+import lombok.val;
+import org.example.monad.try_monad.definitions.ThrowableFunction;
 import org.example.monad.try_monad.definitions.ThrowableSupplier;
 
 import java.util.Objects;
@@ -61,6 +63,11 @@ public final class Failure<T> extends Try<T> {
     @Override
     public T doCatch(Function<Throwable, T> catchFail) {
         return catchFail.apply(e);
+    }
+
+    @Override
+    public <U> Try<U> thenTry(ThrowableFunction<T, U> f) {
+        return new Failure<>(e);
     }
 
 
