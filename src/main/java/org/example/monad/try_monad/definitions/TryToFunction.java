@@ -7,7 +7,7 @@ import java.util.function.Function;
 public interface TryToFunction<A, B> extends Function<Try<A>, Try<B>> {
 
     default Try<B> tryApply(A a){
-        return this.apply(Try.successful(a));
+        return this.apply(Try.suceeds(a));
     }
 
     default <C> TryToFunction<A, C> thenTryTo(ThrowableFunction<B, C> after){

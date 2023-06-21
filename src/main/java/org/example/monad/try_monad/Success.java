@@ -4,7 +4,6 @@ import org.example.monad.try_monad.definitions.ThrowableFunction;
 import org.example.monad.try_monad.definitions.ThrowableSupplier;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 public final class Success<T> extends Try<T> {
@@ -70,7 +69,7 @@ public final class Success<T> extends Try<T> {
         try {
             return new Success<>(f.apply(value));
         } catch (Throwable e) {
-            return Try.failure(e);
+            return Try.fails(e);
         }
     }
 

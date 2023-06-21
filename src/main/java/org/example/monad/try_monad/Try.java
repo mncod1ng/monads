@@ -13,9 +13,9 @@ public abstract sealed class Try<T> permits Success, Failure {
     public static <U> Try<U> to(ThrowableSupplier<U> f) {
         Objects.requireNonNull(f);
         try {
-            return Try.successful(f.get());
+            return Try.suceeds(f.get());
         } catch (Throwable e) {
-            return Try.failure(e);
+            return Try.fails(e);
         }
     }
 
@@ -24,18 +24,22 @@ public abstract sealed class Try<T> permits Success, Failure {
         return (Try<A> tryA) -> {
             try {
                 A a = tryA.get();
-                return Try.successful(f.apply(a));
+                return Try.suceeds(f.apply(a));
             } catch (Throwable e) {
-                return Try.failure(e);
+                return Try.fails(e);
             }
         };
     }
 
-    public static <U> Success<U> successful(U u) {
-        return new Success<>(u);
+    public static <U> Try<U> of(U value){
+        return Try.suceeds(value);
     }
 
-    public static <U> Failure<U> failure(Throwable e) {
+    public static <U> Success<U> suceeds(U neverFails) {
+        return new Success<>(neverFails);
+    }
+
+    public static <U> Failure<U> fails(Throwable e) {
         return new Failure<>(e);
     }
 

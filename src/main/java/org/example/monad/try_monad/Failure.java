@@ -1,11 +1,9 @@
 package org.example.monad.try_monad;
 
-import lombok.val;
 import org.example.monad.try_monad.definitions.ThrowableFunction;
 import org.example.monad.try_monad.definitions.ThrowableSupplier;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 public final class Failure<T> extends Try<T> {
@@ -32,7 +30,7 @@ public final class Failure<T> extends Try<T> {
     @Override
     public <U> Try<U> flatMap(Function<? super T, Try<U>> f) {
         Objects.requireNonNull(f);
-        return Try.failure(e);
+        return Try.fails(e);
     }
 
     @Override
