@@ -89,7 +89,7 @@ public class TryTest {
 
     @Test
     void try_another_usage_again() {
-        Integer result = Try.of("fails")
+        Integer result = Try.to("fails")
                 .thenTry(Integer::valueOf)
                 .thenTry(integer -> integer / 2)
                 .doCatch(fail -> FALLBACK_INTEGER);

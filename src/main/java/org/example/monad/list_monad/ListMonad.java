@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 
 public class ListMonad {
 
-    public <X,Y> Function<List<X>, List<Y>> fmap(Function<X, Y> f){
+    public static <X,Y> Function<List<X>, List<Y>> fmap(Function<X, Y> f){
         return (List<X> listX) -> listX.stream().map(f).collect(Collectors.toList());
     }
 
-    public <X> List<X> unit(X x){
+    public static <X> List<X> unit(X x){
         return List.of(x);
     }
 
-    public <X> List<X> flat(List<List<X>> nestedList){
+    public static <X> List<X> flat(List<List<X>> nestedList){
         BinaryOperator<List<X>> concat = (list1, list2) -> {
             list1.addAll(list2);
             return list1;

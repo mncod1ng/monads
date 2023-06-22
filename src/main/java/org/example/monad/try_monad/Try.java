@@ -31,7 +31,7 @@ public abstract sealed class Try<T> permits Success, Failure {
         };
     }
 
-    public static <U> Try<U> of(U value){
+    public static <U> Try<U> to(U value){
         return Try.suceeds(value);
     }
 
