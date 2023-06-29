@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.is;
 public class TryTest {
 
     public static final String IO_EXCEPTION_FALLBACK_STRING = "IOException Fallback String";
-    public static final int FALLBACK_INTEGER = 0;
+    public static final int FALLBACK_INTEGER = 123;
 
     @Test
     void should_be_one_when_divisble_by_two() {
@@ -89,7 +89,7 @@ public class TryTest {
 
     @Test
     void try_another_usage_again() {
-        Integer result = Try.to("fails")
+        Integer result = Try.to("1")
                 .thenTry(Integer::valueOf)
                 .thenTry(integer -> integer / 2)
                 .doCatch(fail -> FALLBACK_INTEGER);
