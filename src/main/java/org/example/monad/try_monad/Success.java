@@ -36,7 +36,7 @@ public final class Success<T> extends Try<T> {
     @Override
     public <U> Try<U> map(Function<? super T, U> f) {
         Objects.requireNonNull(f);
-        return new Success<>(f.apply(value));
+        return Try.to(() -> f.apply(value));
     }
 
     @Override
