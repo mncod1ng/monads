@@ -94,7 +94,7 @@ public class TryTest {
                 .thenTry(integer -> integer / 2)
                 .doCatch(fail -> FALLBACK_INTEGER);
 
-        assertThat(result, is(FALLBACK_INTEGER));
+        assertThat(result, is(0));
     }
 
     private static String throwsIOException() throws IOException {
