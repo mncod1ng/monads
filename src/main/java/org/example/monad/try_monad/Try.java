@@ -3,7 +3,6 @@ package org.example.monad.try_monad;
 
 import org.example.monad.try_monad.definitions.ThrowableFunction;
 import org.example.monad.try_monad.definitions.ThrowableSupplier;
-import org.example.monad.try_monad.definitions.TryToFunction;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -19,6 +18,15 @@ public abstract sealed class Try<T> permits Success, Failure {
         }
     }
 
+    public static  <T, R> Function<T,Try<R>> to(Function<T, R> func){
+        return t -> Try.to(t).map(func);
+    }
+
+    public static <T, R> Function<Try<T>, Try<R>> fmap(Function<T, R> f){
+        return tTry -> tTry.map(f);
+    }
+
+    /*
     public static <A, B> TryToFunction<A, B> to(ThrowableFunction<A, B> f) {
         Objects.requireNonNull(f);
         return (Try<A> tryA) -> {
@@ -30,6 +38,8 @@ public abstract sealed class Try<T> permits Success, Failure {
             }
         };
     }
+    */
+
 
     public static <U> Try<U> to(U value){
         return Try.suceeds(value);

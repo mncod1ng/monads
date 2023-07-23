@@ -47,9 +47,9 @@ public class MixingMonadsTest {
 
         Optional<LocalDate> result = Optional.ofNullable(
                 Try.to(internationalPlantNamesIndexApi::findDateByScientificName)
-                        .thenTryTo(Optional::get)
-                        .thenTryTo(anyAge -> LocalDate.parse(anyAge, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)))
-                        .tryApply("Monstera acreana")
+                        .andThen(tryTo -> tryTo.map(Optional::get))
+                        .andThen(tryTo -> tryTo.map(age -> LocalDate.parse(age, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH))))
+                        .apply("Monstera acreana")
                         .doCatch(fail -> {
                             //TODO error handling
                             return null;
@@ -58,6 +58,7 @@ public class MixingMonadsTest {
 
 
         assertThat(result.isEmpty(), Matchers.is(true));
+
     }
 
 

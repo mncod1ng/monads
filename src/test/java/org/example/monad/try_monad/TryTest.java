@@ -68,11 +68,12 @@ public class TryTest {
         assertThat(result, is(2));
     }
 
+
     @Test
     void try_functor_usage() {
         Integer result = Try.to((String string) -> Integer.valueOf(string))
-                .thenTryTo(integer -> integer / 2)
-                .tryApply("fails")
+                .andThen(tryTo -> tryTo.map(n -> n/2))
+                .apply("fails")
                 .doCatch(fail -> FALLBACK_INTEGER);
 
         assertThat(result, is(FALLBACK_INTEGER));

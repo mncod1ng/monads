@@ -1,7 +1,6 @@
-package org.example;
+package org.example.monad.pipe;
 
 import org.example.monad.try_monad.Try;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiFunction;
@@ -10,7 +9,7 @@ import java.util.function.Function;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class PipeSyntaxTest {
+public class RawPipeSyntaxTest {
 
     @Test
     void test_pipe_syntax() {
